@@ -1,66 +1,26 @@
-![Tensorpack](.github/tensorpack.png)
+## iNaturalist Challenge(2018) with resnet
 
-Tensorpack is a training interface based on TensorFlow.
+## Introduction
+We train resnet(152/101/50 layers) for iNaturalist Challenge at FGVC 2018 with [tensorpack](https://github.com/ppwwyyxx/tensorpack#toc0), which is a training interface based on TensorFlow.
 
-[![Build Status](https://travis-ci.org/ppwwyyxx/tensorpack.svg?branch=master)](https://travis-ci.org/ppwwyyxx/tensorpack)
-[![ReadTheDoc](https://readthedocs.org/projects/tensorpack/badge/?version=latest)](http://tensorpack.readthedocs.io/en/latest/index.html)
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/tensorpack/users)
-[![model-zoo](https://img.shields.io/badge/model-zoo-brightgreen.svg)](http://models.tensorpack.com)
+## Result 
+On inaturalist-2018 Dataset, we train resnet(50/101/152) respectively，the result is as follows:
 
-## Features:
+|         Model Name                                               |<sub>train-error-top1</sub>|<sub>train-error-top3</sub>|<sub>val-error-top1</sub>|<sub>val-error-top3</sub>|
+|-------------------------|------------------|------------------|---------          |-------         |-------         |--------------         |   
+|<sub>Resnet50 </sub>      | 0.13361             | 0.061188            |   0.399           | 0.24171          |   
+|<sub>Resnet101</sub>   |0.105 | 0.061306     |   0.37014           | 0.21371          |
+|<sub>Resnet152</sub>   | 0.11464        | 0.059394      |   0.35454           | 0.20024          |
 
-It's Yet Another TF high-level API, with __speed__, __readability__ and __flexibility__ built together.
+## Installation, Prepare data, Training, Testing
 
-1. Focus on __training speed__.
-	+	Speed comes for free with tensorpack -- it uses TensorFlow in the __efficient way__ with no extra overhead.
-	  On different CNNs, it runs training [1.2~5x faster](https://github.com/tensorpack/benchmarks/tree/master/other-wrappers) than the equivalent Keras code.
-
-	+ Data-parallel multi-GPU training is off-the-shelf to use. It scales as well as Google's [official benchmark](https://www.tensorflow.org/performance/benchmarks).
-
-	+ Distributed data-parallel training is also supported and scales well. See [tensorpack/benchmarks](https://github.com/tensorpack/benchmarks) for more benchmark scripts.
-
-2. Focus on __large datasets__.
-	+ It's unnecessary to read/preprocess data with a new language called TF.
-		Tensorpack helps you load large datasets (e.g. ImageNet) in __pure Python__ with autoparallelization.
-
-3. It's not a model wrapper.
-	+ There are too many symbolic function wrappers in the world.
-		Tensorpack includes only a few common models.
-	  But you can use any symbolic function library inside tensorpack, including tf.layers/Keras/slim/tflearn/tensorlayer/....
-
-See [tutorials](http://tensorpack.readthedocs.io/tutorial/index.html#user-tutorials) to know more about these features.
-
-## [Examples](examples):
-
-We refuse toy examples.
-Instead of showing you 10 arbitrary networks trained on toy datasets,
-[tensorpack examples](examples) faithfully replicate papers and care about reproducing numbers,
-demonstrating its flexibility for actual research.
-
-### Vision:
-+ [Train ResNet](examples/ResNet) and [other models](examples/ImageNetModels) on ImageNet.
-+ [Train Faster-RCNN / Mask-RCNN on COCO object detection](examples/FasterRCNN)
-+ [Generative Adversarial Network(GAN) variants](examples/GAN), including DCGAN, InfoGAN, Conditional GAN, WGAN, BEGAN, DiscoGAN, Image to Image, CycleGAN.
-+ [DoReFa-Net: train binary / low-bitwidth CNN on ImageNet](examples/DoReFa-Net)
-+ [Fully-convolutional Network for Holistically-Nested Edge Detection(HED)](examples/HED)
-+ [Spatial Transformer Networks on MNIST addition](examples/SpatialTransformer)
-+ [Visualize CNN saliency maps](examples/Saliency)
-+ [Similarity learning on MNIST](examples/SimilarityLearning)
-
-### Reinforcement Learning:
-+ [Deep Q-Network(DQN) variants on Atari games](examples/DeepQNetwork), including DQN, DoubleDQN, DuelingDQN.
-+ [Asynchronous Advantage Actor-Critic(A3C) with demos on OpenAI Gym](examples/A3C-Gym)
-
-### Speech / NLP:
-+ [LSTM-CTC for speech recognition](examples/CTC-TIMIT)
-+ [char-rnn for fun](examples/Char-RNN)
-+ [LSTM language model on PennTreebank](examples/PennTreebank)
+## Disclaimer
+* The code is tested on a server with `188.00` GB memory, and `40` core cpu. Data storages in SSD.
+* we train the model with 8 Pascal Titian XP gpu, for resnet50 the batch is `32*8=256`, for resnet101/152 the batch is `24*8=192`
 
 ## Install:
-
 Dependencies:
-
-+ Python 2.7 or 3
++ python3. We recommend using Anaconda as it already includes many common packages.
 + Python bindings for OpenCV (Optional, but required by a lot of features)
 + TensorFlow >= 1.3.0 (Optional if you only want to use `tensorpack.dataflow` alone as a data processing library)
 ```
@@ -69,9 +29,37 @@ pip install -U git+https://github.com/ppwwyyxx/tensorpack.git
 # or add `--user` to avoid system-wide installation.
 ```
 
-## Citing Tensorpack:
+### Prepare data
+data should be organized as follows(set path in config.py):
+```
+$HOME/DataSet/iNaturalist2018/
+    |->ground_truth
+    |    |train2018.json
+    |    |val2018.json
+    |    |test2018.json
+    |->train_val2018
+    	 |...
+    |->test2018
+         |...
+```
 
-If you use Tensorpack in your research or wish to refer to the examples, please cite with:
+### Train and Eval
+* train script example:
+```
+python iNaturalist-resnet.py --data /home/huzhikun/DataSet/iNaturalist2018/ --batch 192 --mode resnet --gpu 0,1,2,3,4,5,6,7 -d 152
+```
+* eval script example:
+```
+python iNaturalist-resnet.py --eval --data /home/huzhikun/DataSet/iNaturalist2018/ --mode resnet --gpu 0,1,2,3 -d 152 --load train_log/iNaturalist-resnet-d152/model-205065
+```
+
+## Test with kaggle submit file(.csv)
+* test script example:
+```
+python iNaturalist-resnet.py --test --data /home/huzhikun/DataSet/iNaturalist2018/ --mode resnet --gpu 7 -d 152 --load ./train_log/iNaturalist-resnet-d152/model-239190
+```
+
+## Citing
 ```
 @misc{wu2016tensorpack,
   title={Tensorpack},
