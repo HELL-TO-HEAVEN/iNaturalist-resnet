@@ -6,11 +6,11 @@ We train resnet(152/101/50 layers) for iNaturalist Challenge at FGVC 2018 with [
 ## Result
 On inaturalist-2018 Dataset, we train resnet(50/101/152) respectively，the result is as follows:
 
-|         Model Name                                               |<sub>train-error-top1</sub>|<sub>train-error-top3</sub>|<sub>val-error-top1</sub>|<sub>val-error-top3</sub>|
-|-------------------------|------------------|------------------|---------          |-------         |-------         |--------------         |
-|<sub>Resnet50 </sub>      | 0.13361             | 0.061188            |   0.399           | 0.24171          |
-|<sub>Resnet101</sub>   |0.105 | 0.061306     |   0.37014           | 0.21371          |
-|<sub>Resnet152</sub>   | 0.11464        | 0.059394      |   0.35454           | 0.20024          |
+|Model Name|<sub>train-error-top1</sub>|<sub>train-error-top3</sub>|<sub>val-error-top1</sub>|<sub>val-error-top3</sub>|
+|--------------------|---------|----------|---------|---------|
+|<sub>Resnet50 </sub>| 0.13361 | 0.061188 | 0.399   | 0.24171 |
+|<sub>Resnet101</sub>| 0.105   | 0.061306 | 0.37014 | 0.21371 |
+|<sub>Resnet152</sub>| 0.11464 | 0.059394 | 0.35454 | 0.20024 |
 
 ## Installation, Prepare data, Training, Testing
 
