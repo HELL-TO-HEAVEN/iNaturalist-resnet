@@ -46,17 +46,17 @@ $HOME/DataSet/iNaturalist2018/
 ### Train and Eval
 * train script example:
 ```
-python iNaturalist-resnet.py --data /home/huzhikun/DataSet/iNaturalist2018/ --batch 192 --mode resnet --gpu 0,1,2,3,4,5,6,7 -d 152
+python iNaturalist-resnet.py --data $HOME/DataSet/iNaturalist2018/ --batch 192 --mode resnet --gpu 0,1,2,3,4,5,6,7 -d 152
 ```
 * eval script example:
 ```
-python iNaturalist-resnet.py --eval --data /home/huzhikun/DataSet/iNaturalist2018/ --mode resnet --gpu 0,1,2,3 -d 152 --load train_log/iNaturalist-resnet-d152/model-205065
+python iNaturalist-resnet.py --eval --data $HOME/DataSet/iNaturalist2018/ --mode resnet --gpu 0,1,2,3 -d 152 --load train_log/iNaturalist-resnet-d152/model-205065
 ```
 
 ## Test with kaggle submit file(.csv)
 * test script example:
 ```
-python iNaturalist-resnet.py --test --data /home/huzhikun/DataSet/iNaturalist2018/ --mode resnet --gpu 7 -d 152 --load ./train_log/iNaturalist-resnet-d152/model-239190
+python iNaturalist-resnet.py --test --data $HOME/DataSet/iNaturalist2018/ --mode resnet --gpu 7 -d 152 --load ./train_log/iNaturalist-resnet-d152/model-239190
 ```
 
 ## Citing
